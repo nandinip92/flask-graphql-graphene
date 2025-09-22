@@ -1,98 +1,47 @@
-# 🧩 Flask + GraphQL Demo
+🧩 Flask + GraphQL Demo
 
-This is a minimal project demonstrating how Flask and GraphQL work together.
-It uses Flask as the lightweight web framework and Graphene to define a simple GraphQL schema.
+A minimal project demonstrating how Flask and GraphQL work together.
+This project uses Flask as a lightweight web framework and Graphene to define a simple GraphQL schema.
 
-The demo includes:
+## Features
 
-- A basic `hello` query (`{ hello }`) that returns `"Hello, World!"`
-- Integration of GraphQLView to expose a `/graphql` endpoint
-- Support for the GraphiQL interface to interactively test queries in the browser
-- This project serves as a quick starting point for learning how to build GraphQL APIs with Flask.
+- A basic hello query ({ hello }) that returns "Hello, World!"
 
-**👉 Checkout [FLASK.md](./docs/FLASK.md) to know more about Flask.**
+- Integration of GraphQLView to expose a /graphql endpoint
 
-## Project setup
+- GraphiQL interface for interactive testing of queries in the browser
 
-### 1. Create a new directory for you project and navigateinto it
+- Quick starting point for learning how to build GraphQL APIs with Flask
+
+## Getting Started
+
+Follow these steps to run the project on your local machine.
+
+### 1. Clone the repository
 
 ```bash
-mkdir graphql-flask-demo
+git clone https://github.com/<your-username>/graphql-flask-demo.git
 cd graphql-flask-demo
 ```
 
-### 2. Create a virtual environment and activate it:
+### 2. Create and activate a virtual environment
 
-It’s best practice to use a virtual environment for each Python project. This isolates your project’s dependencies from other projects or the system Python, avoids version conflicts, and makes it easier to share your project with others.
+It’s best practice to use a virtual environment to isolate dependencies.
 
 ```bash
 python -m venv venv        # Create a virtual environment
 
 # Activate it:
-# Windows(command prompt):
+# Windows (Command Prompt):
 .\venv\Scripts\activate
-
-# Windows (PowerShell)
+# Windows (PowerShell):
 .\venv\Scripts\Activate.ps1
-
-#git bash of windows
-source venv/Scripts/activate
-
-# Linux/MacOS:
-source venv/bin/activate
-
+# Git Bash / Linux / MacOS:
+source venv/Scripts/activate  # Windows Git Bash
+# source venv/bin/activate     # Linux / MacOS
 ```
 
-While activated, any packages you install will only affect this project.
-
-#### Why Create a Virtual Environment?
-
-1. Isolate Dependencies
-
-   - Each Python project may need different libraries or different versions of the same library.
-   - A virtual environment ensures that your project’s dependencies don’t conflict with other projects or the system Python.
-
-2. Avoid System Pollution
-
-   - Installing packages globally can clutter your system Python and might require admin rights.
-   - With a virtual environment, all packages are stored inside the project folder.
-
-3. Reproducibility
-
-   - Virtual environments make it easier to share your project with others.
-   - Using `requirements.txt` with `pip install -r requirements.txt`, others can recreate the exact environment you used.
-
-4. Safe Experimentation
-
-   - You can try out new packages or versions without affecting other projects or your system Python.
-
-### 3. Install Required Dependencies
-
-With the virtual environment active, install Flask, Flask-GraphQL, and Graphene:
-
-```bash
-pip install Flask Flask-GraphQL graphene
-
-```
-
-### 4. Save Dependencies to requirements.txt
-
-After installing the packages, generate a requirements.txt file so others (or yourself on another machine) can recreate the same environment:
-
-```bash
-pip freeze > requirements.txt
-```
-
-- This file will list all installed packages with exact versions
-- Example content of `requirements.txt`:
-
-```ini
-Flask==2.3.2
-Flask-GraphQL==2.0.1
-graphene==3.2.1
-```
-
-- Share this file in your repository. Others can install the same packages with:
+3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -100,28 +49,51 @@ pip install -r requirements.txt
 
 **_Note:_**
 
-- If someone clones your repo, they can install all required packages at once using:
+- If you skip using a virtual environment, packages will be installed globally.
+- `requirements.txt` ensures everyone uses the same package versions.
+
+4. Run the Flask App
 
 ```bash
-pip install -r requirements.txt
-
+python app.py
 ```
 
-### 5. Add `.gitignore`
+- By default, the server runs on `http://127.0.0.1:5000`
+- Open this URL in your browser and navigate to `/graphql` to access the GraphiQL interface.
 
-Make sure to ignore your virtual environment folder in Git so it doesn’t get committed to the repository.
+Test query:
 
-Add this to your .gitignore file:
+```graphql
+{
+  hello
+}
+```
+
+Expected response:
+
+```json
+{
+  "data": {
+    "hello": "Hello, World!"
+  }
+}
+```
+
+### 5. Git Ignore
+
+Make sure to ignore the virtual environment in Git by adding this to .gitignore:
 
 ```bash
 venv/
 ```
 
-This ensures that only your code and requirements.txt are tracked, while the virtual environment (which can be recreated anytime) is excluded.
+This ensures that only your code and requirements.txt are tracked, while the virtual environment is excluded.
 
-**Important:**
+## Further Reading
 
-- Make sure you run this after creating and **activating** the virtual environment to ensure all packages are installed inside it.
-- If the **virtual environment is not active**, the packages will be installed globally on your system Python, which may cause conflicts with other projects.
+- Learn more about Flask: [FLASK.md](./docs/FLASK.md)
 
+- Build a Flask + GraphQL project from scratch: [ProjectSetUp.md](./docs/ProjectSetUp.md)
+
+- Step-by-step guide to create the app: [BuildFlaskGraphQL.md](./docs/BuildFlaskGraphQL.md)
 
