@@ -109,3 +109,13 @@ This ensures that only your code and requirements.txt are tracked, while the vir
 
 - Make sure you run this after creating and **activating** the virtual environment to ensure all packages are installed inside it.
 - If the **virtual environment is not active**, the packages will be installed globally on your system Python, which may cause conflicts with other projects.
+
+## 6. Deactivate the virtual environment
+
+When you’re done working on your project, you can deactivate the virtual environment to return to the global Python environment:
+
+```bash
+deavtivate
+```
+
+👉 After deactivating, your terminal will no longer show (venv) in the prompt, meaning you’re back to the system Python.
