@@ -13,15 +13,32 @@ from flask import Flask                  # Flask is the web framework
 from flask_graphql import GraphQLView   # Provides a GraphQL endpoint for Flask
 import graphene                         # Graphene is a Python library to build GraphQL schemas
 
-# Define a GraphQL schema with a query type
+# # Define a GraphQL schema with a query type
+# class Query(graphene.ObjectType):
+#     # Define a simple "hello" field that returns a string
+#     hello = graphene.String(description='A typical hello world')
+
+#     # Resolver function for the "hello" field
+#     # This function returns the value of the field when queried
+#     def resolve_hello(self, info):
+#         return 'Hello, World!'
+
+# Define the root Query type for GraphQL
 class Query(graphene.ObjectType):
-    # Define a simple "hello" field that returns a string
-    hello = graphene.String(description='A typical hello world')
+    # Define a "hello" field with an optional argument "name"
+    hello = graphene.String(
+        name=graphene.Argument(graphene.String, default_value="World"),  # Optional argument with default
+        description="Say hello to someone"  # Description shown in GraphiQL or schema introspection
+    )
 
     # Resolver function for the "hello" field
-    # This function returns the value of the field when queried
-    def resolve_hello(self, info):
-        return 'Hello, World!'
+    def resolve_hello(self, info, name):
+        """
+        This function is called whenever the 'hello' field is queried.
+        - 'info' contains request context (not used here)
+        - 'name' is provided by the client or defaults to "World"
+        """
+        return f"Hello {name}"  # Returns a greeting string
 
 # Create a GraphQL schema using the Query type
 schema = graphene.Schema(query=Query)
@@ -56,10 +73,69 @@ if __name__ == '__main__':
 - `GraphQLView` creates a GraphQL endpoint in Flask.
 - `graphene` defines the GraphQL schema, types, and resolvers.
 
-### GraphQL Query:
+### Understanding the Query Class and hello Field
+
+- Our `Query` class extends `graphene.ObjectType`, which is how Graphene defines the root of a GraphQL schema.
+
+- Within the `Query` class, we define a field called `hello`.
+
+**Field Definition**
+
+```python
+hello = graphene.String(
+    name=graphene.Argument(graphene.String, default_value="World"),  # Optional argument with default
+    description="Say hello to someone"  # Description shown in GraphiQL or schema introspection
+)
+```
+
+- Every field must have a **return type**. Here, `hello` returns a `String`.
+
+- Fields can also **accept arguments**. In this case:
+
+  - `name` is an optional argument of type `String`.
+  - `default_value="World"` ensures that if no name is provided, `"World"` is used.
+
+- `description` provides developer-friendly documentation visible in GraphiQL or other tools.
+
+**Argument Explanation**
+
+```python
+name = graphene.Argument(graphene.String, default_value="World")
+```
+
+- name = graphene.Argument(graphene.String, default_value="World")
+  Argument() specifies that this is an argument to the field.
+- Its type (graphene.String) defines what type of value it accepts.
+- default_value is used when the client does not provide an argument.
+
+**Resolver Function**
+
+```python
+def resolve_hello(self, info, name):
+    return f"Hello {name}"
+```
+
+- The resolver defines the logic executed when a field is queried.
+
+- It must be named as `resolve\_<field_name>`; here, the field is `hello`, so the resolver is `resolve_hello`.
+
+- Arguments passed to the field (like `name`) are received by the resolver.
+
+- The function returns the value for the field; in this case, it returns `"Hello <name>"`.
+
+### Summuary of what is happening in GraphQL Query:
 
 - The `Query` class defines what data the API provides.
-- The `hello` field returns `"Hello, World!"` via the `resolve_hello` method.
+
+- The `hello` field is a string field that can optionally accept a name argument:
+
+- If a `name` is provided, it returns `"Hello <name>".`
+
+- If no `name` is provided, it defaults to `"World"` and returns `"Hello World"`.
+
+- The `description` of the field (`"Say hello to someone"`) is displayed in GraphiQL or other tools for developer-friendly documentation.
+
+- The `resolve_hello` method is the resolver that returns the actual data for the hello query.
 
 ### Schema:
 

@@ -1,12 +1,17 @@
 from flask import Flask
 from flask_graphql import GraphQLView
 import graphene
-
 class Query(graphene.ObjectType):
-    hello = graphene.String(description="a typical hello world")
+    # Hello field with optional argument 'name'
+    hello = graphene.String(
+        name=graphene.Argument(graphene.String, default_value="World"),
+        description="Say hello to someone"
+    )
 
-    def resolve_hello(self,info):
-        return "HEllo World"
+    # Resolver
+    def resolve_hello(self, info, name):
+        # If no name is provided, default_value="World" will be used
+        return f"Hello {name}"
 
 # Create a GraphQL schema using the Query type 
 schema = graphene.Schema(query=Query)
